@@ -8,65 +8,58 @@
 <body>
 <h1>JS pattern MODULE</h1>
 <div>
-   <input type="text"/>
+    <input type="text"/>
     <button id="add">Add</button>
 </div>
 <div id="show_list"><ul id="list_name"></ul></div>
 <script>
-var person = (function(){
-    var names = ['Sveta','Vasia','Masha','Kolya'];
-//    var divList = $('#list_name');
-    //для ініціалізації головних функцій обробки html документу.
-    function init(){
-        $.each(names, function(i)
-        {
-            var li = $('<li/>')
-                    .text(names[i])
-                    .appendTo(cacheDom());
-            $('<span/>').text(' X')
-                    .appendTo(li);
-        });
-    }
-    //записує в змінні модуля доступи до потрібних елементів.
-    function cacheDom(){
+    var person = (function(){
+        var names = ['Sveta','Vasia','Masha','Kolya'];
+        //для ініціалізації головних функцій обробки html документу.
+        function init() {
+            bindEvent();
+            addPerson();
+            delPerson();
+        }
+        //записує в змінні модуля доступи до потрібних елементів.
+        function cacheDom(){
             var divList=$('#list_name');
-
-        return divList
-    }
-    //яка по доступах з попередньої функції ставить відповідні події на елементи.
-    function bindEvent(){
-
-    }
-    //яка оновлює html документ. Показуючі оновленні дані масиву.
-            function render(){
-        $('li').remove();
-        init();
-//        location.reload();
-//        $( "#list_name" ).replaceWith(init());
-    }
-    function addPerson(){
-        $('#add').on('click',function(){
-           names.push($('input').val());
-            $('input').val('');
-            render();
-        });
-    }
-    function delPerson(){
-        $('#list_name').delegate('span','click',function(){
-            var num=$(this).parent().index();
-            names.splice(num, 1);
-            render();
-        })
-    }
-    return{
-        forList:init,
-        adding:addPerson,
-        del:delPerson
-    }
-})();
-person.forList();
-person.adding();
-person.del();
+            return divList
+        }
+        //яка по доступах з попередньої функції ставить відповідні події на елементи.
+        function bindEvent(){
+            $.each(names, function(i)
+            {
+                var li = $('<li/>')
+                        .text(names[i])
+                        .appendTo(cacheDom());
+                $('<span/>').text(' X')
+                        .appendTo(li);
+            });
+        }
+        function render(){
+            $('li').remove();
+            bindEvent();
+        }
+        function addPerson(){
+            $('#add').on('click',function(){
+                names.push($('input').val());
+                $('input').val('');
+                render();
+            });
+        }
+        function delPerson(){
+            $('#list_name').delegate('span','click',function(){
+                var num=$(this).parent().index();
+                names.splice(num, 1);
+                render();
+            })
+        }
+        return{
+            forList:init
+        }
+    })();
+    person.forList();
 </script>
 </body>
 </html>
